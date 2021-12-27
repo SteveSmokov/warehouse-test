@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet context="legacy" author="s.smokov" id="1">
+        <createTable tableName="products">
+            <column autoIncrement="true" name="id" type="SERIAL">
+                <constraints primaryKey="true" primaryKeyName="PRD_PK"/>
+            </column>
+            <column name="name" type="VARCHAR(500)"/>
+            <column name="sku" type="VARCHAR(30)"/>
+            <column name="price" type="NUMERIC(19,2)"/>
+        </createTable>
+    </changeSet>
+    <changeSet context="legacy" author="s.smokov" id="2">
+        <createTable tableName="categories">
+            <column autoIncrement="true" name="id" type="SERIAL">
+                <constraints primaryKey="true" primaryKeyName="CAT_PK"/>
+            </column>
+            <column name="name" type="VARCHAR(500)"/>
+        </createTable>
+    </changeSet>
+    <changeSet context="legacy" author="s.smokov" id="3">
+        <addColumn tableName="products" schemaName="warehouse">
+            <column name="cat_id" type="int">
+                <constraints nullable="true" foreignKeyName="PRD_CAT_FK" referencedTableName="categories" referencedColumnNames="id"/></column>
+        </addColumn>
+    </changeSet>
+    <changeSet context="legacy" author="s.smokov" id="4">
+        <createTable tableName="orders">
+            <column autoIncrement="true" name="id" type="SERIAL">
+                <constraints primaryKey="true" primaryKeyName="ORD_PK"/>
+            </column>
+            <column name="amount" type="NUMERIC(19,2)"/>
+            <column name="timestamp" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/> </column>
+        </createTable>
+    </changeSet>
+    <changeSet context="legacy" author="s.smokov" id="5">
+        <createTable tableName="order_items">
+            <column autoIncrement="true" name="id" type="SERIAL">
+                <constraints primaryKey="true" primaryKeyName="ORI_PK"/>
+            </column>
+            <column name="quantity" type="int"/>
+            <column name="timestamp" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/> </column>
+            <column name="prd_id" type="int">
+                <constraints nullable="false" foreignKeyName="ORI_PRD_FK" referencedTableName="products" referencedColumnNames="id"/>
+            </column>
+            <column name="ord_id" type="int">
+                <constraints nullable="false" foreignKeyName="ORI_ORD_FK" referencedTableName="orders" referencedColumnNames="id"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
