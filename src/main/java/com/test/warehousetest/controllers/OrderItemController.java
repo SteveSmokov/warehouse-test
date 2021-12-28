@@ -19,7 +19,7 @@ public class OrderItemController {
     @GetMapping(value = "/orderItem/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public OrderItem getCategory(@PathVariable long id){
-        return repository.findById(id).orElseThrow();
+        return repository.findById(id).orElse(null);
     }
 
     @PostMapping(value = "/orderItem",
@@ -35,7 +35,6 @@ public class OrderItemController {
     public OrderItem updateCategory(@PathVariable long id,
                                 @RequestBody OrderItem order){
         OrderItem saved = repository.getById(id);
-        saved.setOrder(order.getOrder());
         saved.setProduct(order.getProduct());
         saved.setQuantity(order.getQuantity());
         return repository.save(saved);

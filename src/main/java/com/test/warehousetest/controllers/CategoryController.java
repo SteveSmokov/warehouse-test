@@ -18,7 +18,7 @@ public class CategoryController {
     @GetMapping(value = "/category/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public Category getCategory(@PathVariable long id){
-        return categoryRepository.findById(id).orElseThrow();
+        return categoryRepository.findById(id).orElse(null);
     }
 
     @PostMapping(value = "/category",

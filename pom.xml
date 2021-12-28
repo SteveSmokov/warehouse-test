@@ -20,6 +20,7 @@
         <hibernate-core.version>5.4.6.Final</hibernate-core.version>
         <liquibase.version>4.6.2</liquibase.version>
         <postgresql.version>42.2.5</postgresql.version>
+        <log4j.version>2.16.0</log4j.version>
     </properties>
     <dependencies>
         <dependency>
@@ -60,6 +61,17 @@
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-hibernate5</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-bom</artifactId>
+            <version>${log4j.version}</version>
+            <scope>import</scope>
+            <type>pom</type>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
         </dependency>
     </dependencies>
 

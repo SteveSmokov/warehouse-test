@@ -19,7 +19,7 @@ public class ProductController {
     @GetMapping(value = "/product/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public Product getProduct(@PathVariable long id){
-        return repository.findById(id).orElseThrow();
+        return repository.findById(id).orElse(null);
     }
 
     @PostMapping(value = "/product",
