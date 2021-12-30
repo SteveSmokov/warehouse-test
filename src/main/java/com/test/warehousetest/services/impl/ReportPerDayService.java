@@ -1,6 +1,6 @@
 package com.test.warehousetest.services.impl;
 
-import com.test.warehousetest.dao.OrderRepository;
+import com.test.warehousetest.repositories.OrderRepository;
 import com.test.warehousetest.enteties.IDayReport;
 import com.test.warehousetest.services.ReportService;
 import lombok.AllArgsConstructor;

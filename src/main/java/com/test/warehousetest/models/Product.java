@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -22,8 +24,10 @@ public class Product implements Serializable {
     @Column(name = "price")
     private BigDecimal price;
     @Column(name = "sku", length = 30)
+    @Field(type = FieldType.Text)
     private String sku;
     @Column(name = "name", length = 500)
+    @Field(type = FieldType.Text)
     private String name;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="cat_id")

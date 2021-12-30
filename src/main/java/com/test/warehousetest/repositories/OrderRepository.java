@@ -1,7 +1,8 @@
-package com.test.warehousetest.dao;
+package com.test.warehousetest.repositories;
 
 import com.test.warehousetest.enteties.IDayReport;
 import com.test.warehousetest.models.Order;
+import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.Temporal;
@@ -13,7 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 @Repository
-public interface OrderRepository extends JpaRepository<Order, Long> {
+public interface OrderRepository extends ElasticsearchRepository<Order, Long> {
 
     @Query(value = "select t.day, sum(t.amount) as totalSum " +            "from (select date_trunc('day', o.\"timestamp\") as day, o.amount from orders o " +
             "where o.\"timestamp\" between :date_from and :date_to) t " +

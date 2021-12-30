@@ -20,6 +20,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "orders")
+@Document(indexName = "orders")
 public class Order implements Serializable {
     @Id
     @GeneratedValue
@@ -30,6 +31,7 @@ public class Order implements Serializable {
     @JsonManagedReference
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     @PrimaryKeyJoinColumn
+    @Field(type = FieldType.Nested, includeInParent = true)
     private List<OrderItem> orderItems = new ArrayList<>();;
 
 }

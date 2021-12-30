@@ -43,4 +43,10 @@ public class CategoryController {
     public List<Category> getAllCategories(){
         return categoryRepository.findAll();
     }
+
+    @DeleteMapping(value = "/category/{id}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public void deleteItem(@PathVariable("id") long id){
+        categoryRepository.deleteById(id);
+    }
 }

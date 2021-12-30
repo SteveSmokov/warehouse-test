@@ -1,12 +1,10 @@
 package com.test.warehousetest.controllers;
 
 
-import com.test.warehousetest.dao.OrderRepository;
+import com.test.warehousetest.repositories.OrderRepository;
 import com.test.warehousetest.models.Order;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.format.annotation.NumberFormat;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,15 +34,17 @@ public class OrderController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public Order updateOrder(@PathVariable long id,
                                 @RequestBody Order order){
-        Order saved = repository.getById(id);
-        saved.setAmount(order.getAmount());
-        saved.setOrderItems(order.getOrderItems());
-        return repository.save(saved);
+//        Order saved = repository.getById(id);
+//        saved.setAmount(order.getAmount());
+//        saved.setOrderItems(order.getOrderItems());
+//        return repository.save(saved);
+        return null;
     }
 
     @GetMapping(value = "/orders",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Order> getAllOrders(){
-        return repository.findAll();
+//        return repository.findAll();
+        return null;
     }
 }
