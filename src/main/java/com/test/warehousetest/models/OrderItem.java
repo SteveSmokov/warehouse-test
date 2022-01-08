@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Data
@@ -17,9 +19,11 @@ public class OrderItem implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
+    @Min(value = 1)
     @Column(name = "quantity")
     private int quantity;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "prd_id", nullable = false)
     private Product product;
     @JsonBackReference

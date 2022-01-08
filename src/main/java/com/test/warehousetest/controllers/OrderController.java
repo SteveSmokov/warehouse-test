@@ -5,11 +5,10 @@ import com.test.warehousetest.dao.OrderRepository;
 import com.test.warehousetest.models.Order;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.format.annotation.NumberFormat;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -27,7 +26,7 @@ public class OrderController {
     @PostMapping(value = "/order",
                 consumes = MediaType.APPLICATION_JSON_VALUE,
                  produces = MediaType.APPLICATION_JSON_VALUE)
-    public Order addOrder(@RequestBody Order order){
+    public Order addOrder(@RequestBody @Valid Order order){
         return repository.save(order);
     }
 
@@ -35,7 +34,7 @@ public class OrderController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public Order updateOrder(@PathVariable long id,
-                                @RequestBody Order order){
+                                @RequestBody @Valid Order order){
         Order saved = repository.getById(id);
         saved.setAmount(order.getAmount());
         saved.setOrderItems(order.getOrderItems());

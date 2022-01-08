@@ -18,21 +18,21 @@ public class OrderItemController {
 
     @GetMapping(value = "/orderItem/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public OrderItem getCategory(@PathVariable long id){
+    public OrderItem getOrderItem(@PathVariable long id){
         return repository.findById(id).orElse(null);
     }
 
     @PostMapping(value = "/orderItem",
                 consumes = MediaType.APPLICATION_JSON_VALUE,
                  produces = MediaType.APPLICATION_JSON_VALUE)
-    public OrderItem addCategory(@RequestBody OrderItem order){
+    public OrderItem addOrderItem(@RequestBody OrderItem order){
         return repository.save(order);
     }
 
     @PutMapping(value = "/orderItem/{id}",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public OrderItem updateCategory(@PathVariable long id,
+    public OrderItem updateOrderItem(@PathVariable long id,
                                 @RequestBody OrderItem order){
         OrderItem saved = repository.getById(id);
         saved.setProduct(order.getProduct());
@@ -42,7 +42,7 @@ public class OrderItemController {
 
     @GetMapping(value = "/orderItems",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<OrderItem> getAllCategories(){
+    public List<OrderItem> getAllOrderItems(){
         return repository.findAll();
     }
 }

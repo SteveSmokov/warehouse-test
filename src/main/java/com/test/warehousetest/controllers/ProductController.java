@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 
@@ -25,15 +26,15 @@ public class ProductController {
     @PostMapping(value = "/product",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public Product addProduct(@RequestBody Product product){
+    public Product addProduct(@RequestBody @Valid Product product){
         return repository.save(product);
     }
 
     @PutMapping(value = "/product/{id}",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public Product updateCategory(@PathVariable long id,
-                                @RequestBody Product product){
+    public Product updateProduct(@PathVariable long id,
+                                @RequestBody  @Valid Product product){
         Product saved = repository.getById(id);
         saved.setName(product.getName());
         saved.setPrice(product.getPrice());
@@ -44,7 +45,7 @@ public class ProductController {
 
     @GetMapping(value = "/products",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Product> getAllCategories(){
+    public List<Product> getAllProducts(){
         return repository.findAll();
     }
 }

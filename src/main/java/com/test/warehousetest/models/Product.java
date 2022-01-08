@@ -1,11 +1,14 @@
 package com.test.warehousetest.models;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
@@ -25,11 +28,8 @@ public class Product implements Serializable {
     private String sku;
     @Column(name = "name", length = 500)
     private String name;
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="cat_id")
     private Category category;
-    @JsonIgnore
-    @OneToMany(mappedBy = "product")//, cascade = CascadeType.ALL, orphanRemoval = true)
-    @PrimaryKeyJoinColumn
-    private List<OrderItem> orderItems;
 }
