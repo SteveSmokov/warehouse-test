@@ -32,7 +32,7 @@ public class ProductController {
     @PutMapping(value = "/product/{id}",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public Product updateCategory(@PathVariable long id,
+    public Product updateProduct(@PathVariable long id,
                                 @RequestBody Product product){
         Product saved = repository.getById(id);
         saved.setName(product.getName());
@@ -44,7 +44,7 @@ public class ProductController {
 
     @GetMapping(value = "/products",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Product> getAllCategories(){
+    public List<Product> getAllProducts(){
         return repository.findAll();
     }
 }
