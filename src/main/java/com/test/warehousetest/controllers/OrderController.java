@@ -1,50 +1,60 @@
 package com.test.warehousetest.controllers;
 
-
-import com.test.warehousetest.repositories.OrderRepository;
 import com.test.warehousetest.models.Order;
-import lombok.AllArgsConstructor;
+import com.test.warehousetest.models.OrderItem;
+import com.test.warehousetest.services.OrderService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@AllArgsConstructor
+@RequestMapping("/orders")
+@RequiredArgsConstructor
 public class OrderController {
     @Autowired
-    private OrderRepository repository;
+    private OrderService orderService;
 
-    @GetMapping(value = "/order/{id}",
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public Order getOrder(@PathVariable long id){
-        return repository.findById(id).orElse(null);
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Order>> getOrders(){
+        return ResponseEntity.ok(orderService.getOrders());
     }
 
-    @PostMapping(value = "/order",
-                consumes = MediaType.APPLICATION_JSON_VALUE,
-                 produces = MediaType.APPLICATION_JSON_VALUE)
-    public Order addOrder(@RequestBody Order order){
-        return repository.save(order);
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Order> getOrder(@PathVariable("id") Long id){
+        return ResponseEntity.ok(orderService.getOrder(id));
     }
 
-    @PutMapping(value = "/order/{id}",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public Order updateOrder(@PathVariable long id,
-                                @RequestBody Order order){
-//        Order saved = repository.getById(id);
-//        saved.setAmount(order.getAmount());
-//        saved.setOrderItems(order.getOrderItems());
-//        return repository.save(saved);
-        return null;
+    @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> deleteOrder(@PathVariable("id") Long id){
+        orderService.deleteOrder(id);
+        return ResponseEntity.ok("Product with ID - "+id+" deleted successfully");
     }
 
-    @GetMapping(value = "/orders",
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Order> getAllOrders(){
-//        return repository.findAll();
-        return null;
+    @GetMapping(value = "/{id}/items", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<OrderItem>> getOrderItemsByOrderId(@PathVariable("id") Long id){
+        return ResponseEntity.ok(orderService.getOrderItems(id));
     }
+
+    @GetMapping(value = "/{id}/items/{itemId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<OrderItem> getOrderItemByOrderId(@PathVariable("id") Long id,
+                                                          @PathVariable("itemId") Long itemId){
+        return ResponseEntity.ok(orderService.getOrderItem(id, itemId));
+    }
+
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Order> addOrder(@Validated @RequestBody Order order){
+        return ResponseEntity.ok(orderService.addOrder(order));
+    }
+
+    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Order> updateOrder(@PathVariable("id") Long id,
+                                             @Validated @RequestBody Order order){
+        return ResponseEntity.ok(orderService.updateOrder(id, order));
+    }
+
 }

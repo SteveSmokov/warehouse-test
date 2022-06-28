@@ -1,27 +1,27 @@
 package com.test.warehousetest.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
 @Data
-@NoArgsConstructor
+@AllArgsConstructor
 @RequiredArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "categories")
 public class Category implements Serializable {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @NonNull
     @Column(name = "name", length = 500)
     private String name;
-    @JsonIgnore
-    @OneToMany(mappedBy = "category")//, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonBackReference
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
     @PrimaryKeyJoinColumn
     private List<Product> products;
 }
