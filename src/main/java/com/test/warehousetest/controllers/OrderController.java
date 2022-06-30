@@ -32,7 +32,7 @@ public class OrderController {
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> deleteOrder(@PathVariable("id") Long id){
         orderService.deleteOrder(id);
-        return ResponseEntity.ok("Product with ID - "+id+" deleted successfully");
+        return ResponseEntity.ok("Order with ID - "+id+" deleted successfully");
     }
 
     @GetMapping(value = "/{id}/items", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -46,15 +46,29 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getOrderItem(id, itemId));
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/{id}/items",
+            consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<OrderItem> addOrder(  @PathVariable("id") Long id,
+                                                @Validated @RequestBody OrderItem orderItem){
+        return ResponseEntity.ok(orderService.addOrderItem(id, orderItem));
+    }
+
+    @PostMapping(value = "/{id}/items/{itemId}/quantity/{quantity}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<OrderItem> updateOrderItemQuantity(@PathVariable("id") Long id,
+                                                         @PathVariable("itemId") Long itemId,
+                                                         @PathVariable("quantity") Integer quantity){
+        return ResponseEntity.ok(orderService.updateQuantityInOrderItem(id, itemId, quantity));
+    }
+
+    @PatchMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Order> addOrder(@Validated @RequestBody Order order){
         return ResponseEntity.ok(orderService.addOrder(order));
     }
 
-    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Order> updateOrder(@PathVariable("id") Long id,
-                                             @Validated @RequestBody Order order){
-        return ResponseEntity.ok(orderService.updateOrder(id, order));
+    @DeleteMapping(value = "/{id}/items/{itemId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> deleteOrderItemByOrderId(@PathVariable("id") Long id,
+                                                           @PathVariable("itemId") Long itemId){
+        orderService.deleteOrderItemIntoOrder(id, itemId);
+        return ResponseEntity.ok("Item with ID - "+itemId+" into order ID - "+id+" deleted successfully");
     }
-
 }

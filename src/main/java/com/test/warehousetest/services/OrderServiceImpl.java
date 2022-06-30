@@ -61,58 +61,61 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public OrderItem addOrderItem(long orderId, OrderItem orderItem) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(()->new ResourceNotFoundException(String.format(EXCEPTION_ORDER_MESSAGE,orderId)));
-
         order.getOrderItems().add(orderItem);
         order.setAmount(countAmount(order.getOrderItems()));
         orderItem.setOrder(order);
-        orderItemRepository.save(orderItem);
+        return orderItemRepository.save(orderItem);
+    }
+
+    @Override
+    @Transactional
+    public OrderItem updateQuantityInOrderItem(long orderId, long id, int quantity) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(()->new ResourceNotFoundException(String.format(EXCEPTION_ORDER_MESSAGE,orderId)));
+        OrderItem orderItem = order.getOrderItems().stream().filter(o -> o.getId().equals(id)).findFirst()
+                .orElseThrow(()->new ResourceNotFoundException(String.format(EXCEPTION_ITEM_MESSAGE,id)));
+        orderItem.setQuantity(quantity);
+        order.setAmount(countAmount(order.getOrderItems()));
+        orderRepository.save(order);
         return  orderItem;
     }
 
     @Override
-    public OrderItem updateQuantityInOrderItem(long orderId, long id, int quantity) {
-        return null;
-    }
-
-    @Override
+    @Transactional
     public void deleteOrderItemIntoOrder(long orderId, long id) {
-
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(()->new ResourceNotFoundException(String.format(EXCEPTION_ORDER_MESSAGE,orderId)));
+        order.getOrderItems().removeIf(i -> i.getId().equals(id));
+        order.setAmount(countAmount(order.getOrderItems()));
+        orderRepository.save(order);
     }
 
     @Override
-    public void deleteOrderItemsIntoOrder(long orderId) {
-
-    }
-
-    @Override
+    @Transactional
     public Order getOrder(long id) {
         return orderRepository.findById(id)
                 .orElseThrow(()->new ResourceNotFoundException(String.format(EXCEPTION_ORDER_MESSAGE,id)));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Order> getOrders() {
         return orderRepository.findAll();
     }
 
     @Override
+    @Transactional
     public Order addOrder(Order order) {
         order.setAmount(countAmount(order.getOrderItems()));
         return orderRepository.save(order);
     }
 
     @Override
-    public Order updateOrder(Long id, Order order) {
-        Order savedOrder = orderRepository.findById(id)
-                .orElseThrow(()->new ResourceNotFoundException(String.format(EXCEPTION_ORDER_MESSAGE,id)));
-//        savedOrder.getOrderItems().stream().map(c -> ({}));
-        return savedOrder;
-    }
-
-    @Override
+    @Transactional
     public void deleteOrder(long id) {
         orderRepository.deleteById(id);
     }
