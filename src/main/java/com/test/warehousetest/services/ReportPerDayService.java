@@ -1,4 +1,4 @@
-package com.test.warehousetest.services.impl;
+package com.test.warehousetest.services;
 
 import com.test.warehousetest.dao.OrderRepository;
 import com.test.warehousetest.enteties.IDayReport;

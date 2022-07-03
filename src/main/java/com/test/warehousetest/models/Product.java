@@ -1,35 +1,43 @@
 package com.test.warehousetest.models;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
+@RequiredArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "products")
-public class Product implements Serializable {
+@DynamicUpdate
+@DynamicInsert
+public class Product implements Serializable, Cloneable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @NonNull
     @Column(name = "price")
     private BigDecimal price;
     @Column(name = "sku", length = 30)
     private String sku;
+    @NonNull
     @Column(name = "name", length = 500)
     private String name;
-    @NotNull
+    @JsonIgnore
+    @Column(name = "active")
+    private Boolean active = true;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="cat_id")
     private Category category;
+
+    @Override
+    public Product clone() throws CloneNotSupportedException {
+        return (Product) super.clone();
+    }
 }

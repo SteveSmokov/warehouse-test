@@ -43,12 +43,21 @@
             <column name="timestamp" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
                 <constraints nullable="false"/> </column>
             <column name="prd_id" type="int">
-                <constraints nullable="false" foreignKeyName="ORI_PRD_FK" referencedTableName="products" referencedColumnNames="id"/>
+                <constraints nullable="true" foreignKeyName="ORI_PRD_FK" referencedTableName="products" referencedColumnNames="id"/>
             </column>
             <column name="ord_id" type="int">
-                <constraints nullable="false" foreignKeyName="ORI_ORD_FK" referencedTableName="orders" referencedColumnNames="id"/>
+                <constraints nullable="true" foreignKeyName="ORI_ORD_FK" referencedTableName="orders" referencedColumnNames="id"/>
             </column>
         </createTable>
     </changeSet>
-
+    <changeSet context="legacy" author="s.smokov" id="6">
+        <addColumn tableName="products" schemaName="warehouse">
+            <column name="active" type="boolean"/>
+        </addColumn>
+    </changeSet>
+    <changeSet context="legacy" author="s.smokov" id="7">
+        <addColumn tableName="orders" schemaName="warehouse">
+            <column name="active" type="boolean" defaultValueBoolean="true"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

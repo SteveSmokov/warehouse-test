@@ -11,13 +11,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
 @AllArgsConstructor
 @RequestMapping("/categories")
-@Validated
 public class CategoryController {
     @Autowired
     private CategoryService categoryService;
@@ -30,7 +28,7 @@ public class CategoryController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
                  produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Category> addCategory(@RequestBody @Valid Category category){
+    public ResponseEntity<Category> addCategory(@RequestBody Category category){
         return ResponseEntity.ok(categoryService.addCategory(category));
     }
 
@@ -38,7 +36,7 @@ public class CategoryController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Category> updateCategory(@PathVariable("id") long id,
-                                @RequestBody @Valid Category category){
+                                @Validated @RequestBody Category category){
         return ResponseEntity.ok(categoryService.updateCategory(id, category));
     }
 
