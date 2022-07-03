@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -16,6 +17,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/products")
+@Validated
 public class ProductController {
     @Autowired
     private final ProductService productService;
@@ -28,14 +30,14 @@ public class ProductController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Product> addProduct(@Validated @RequestBody Product product){
+    public ResponseEntity<Product> addProduct(@Valid @RequestBody Product product){
         return ResponseEntity.ok(productService.addProduct(product));
     }
 
     @PutMapping(value = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Product> updateProductPrice(@PathVariable("id") long id,
-                                                      @Validated @RequestBody Product product){
+                                                      @Valid @RequestBody Product product){
         return ResponseEntity.ok(productService.updateProduct(id, product));
     }
 
